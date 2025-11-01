@@ -1,23 +1,46 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
+<script lang="ts">
+import { defineComponent } from 'vue'
+import Btn from './components/button.vue'
+import Header from './components/header/header.vue'
+import ItemCard from './components/ItemCard.vue'
+// import Promotion from './components/promotion.vue'
+import PromotionCard from './components/promotionCard.vue'
+import card from './components/card/card.vue'
 
+export default defineComponent({
+  name: 'App',
+  components: {
+    Btn,
+    ItemCard,
+    PromotionCard,
+    Header,
+    card,
+  }
+});
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
+  <div >
+    <Header />
     <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
+   <div>
 
-      <nav>
-        <!-- <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink> -->
-      </nav>
-    </div>
-  </header>
+     <ItemCard class="flex gap-10" />
+     <PromotionCard class="flex gap-5"/>
+     <card />
+   </div>
+   <nav>
+     <!-- <RouterLink to="/">Home</RouterLink>
+     <RouterLink to="/about">About</RouterLink> -->
+   </nav>
 
-  <RouterView />
+
+
+</div>
+ </div>
+
+
+  <!-- <RouterView /> -->
 </template>
 
 <style scoped>
