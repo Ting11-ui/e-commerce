@@ -14,12 +14,12 @@
       <p class="text-xs font-normal text-gray-400 sm:text-[11px]">
         {{ productCount }} item{{ productCount !== 1 ? 's' : '' }}
       </p>
-       
+
     </div>
   </article>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: "CategoryComponent",
   props: {

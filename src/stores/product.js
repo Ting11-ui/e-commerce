@@ -6,12 +6,12 @@ export const useProductStore = defineStore('product', {
     groups: [],
     promotions: [],
     categories: [],
-    products: []
+    products: [],
+    cart: {} // Format: { productId: quantity }
   }),
 
   getters: {
     // 1. Get categories by group name
-    // Note: categories have a 'group' field that matches the group name
     getCategoriesByGroup: (state) => {
       return (groupName) => {
         return state.categories.filter((category) => category.group === groupName)
@@ -21,8 +21,6 @@ export const useProductStore = defineStore('product', {
     // 2. Get products by group name
     getProductsByGroup: (state) => {
       return (groupName) => {
-        // Products can have a 'group' field directly
-        // or we can filter by categories that belong to the group
         const directGroupProducts = state.products.filter(
           (product) => product.group === groupName.toLowerCase()
         )
@@ -31,7 +29,6 @@ export const useProductStore = defineStore('product', {
           return directGroupProducts
         }
 
-        // Fallback: get through categories
         const categoryIds = state.categories
           .filter((category) => category.group === groupName)
           .map(cat => cat.id)
@@ -52,6 +49,20 @@ export const useProductStore = defineStore('product', {
     // 4. Get popular products (countSold > 10)
     getPopularProducts: (state) => {
       return state.products.filter((product) => (product.countSold || 0) > 10)
+    },
+
+    // 5. Get quantity for a specific product
+    getProductQuantity: (state) => {
+      return (productId) => {
+        return state.cart[productId] || 0
+      }
+    },
+
+    // 6. Check if product is in cart
+    isInCart: (state) => {
+      return (productId) => {
+        return !!state.cart[productId] && state.cart[productId] > 0
+      }
     }
   },
 
@@ -73,6 +84,33 @@ export const useProductStore = defineStore('product', {
         console.error('❌ Failed to load product data:', error)
         console.error('Make sure your backend server is running on http://localhost:3000')
       }
+    },
+
+    // Add product to cart
+    addToCart(productId) {
+      if (!this.cart[productId]) {
+        this.cart[productId] = 1
+      }
+    },
+
+    // Increase product quantity
+    incrementQuantity(productId) {
+      if (this.cart[productId]) {
+        this.cart[productId] += 1
+      } else {
+        this.cart[productId] = 1
+      }
+    },
+
+    // Decrease product quantity
+    decrementQuantity(productId) {
+      if (this.cart[productId] && this.cart[productId] > 1) {
+        this.cart[productId] -= 1
+      } else {
+        delete this.cart[productId]
+      }
     }
   }
+
 })
+

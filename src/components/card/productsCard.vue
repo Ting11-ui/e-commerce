@@ -1,6 +1,6 @@
 
 <template>
-
+  <router-link to="/products">
       <div class=" h-100 w-75 border-[1.5px] border-gray-300 hover:border-[rgba(59,183,126,1)] rounded-md ">
         <div class="relative h-33">
          <div v-if="promotionAsPercentage "
@@ -22,7 +22,7 @@
         <div class="p-4 mt-13 ">
           <ul>
             <li class="text-gray-500 ">Hodo Foods</li>
-            <li class="font-semibold py-1">{{ name }}</li>
+            <li class="font-semibold py-1 text-(--main-color2)">{{ name }}</li>
             <li class="py-1 text-xl text-gray-400 font-semibold gap-2 ">
               <span class="flex gap-2">
                 <template v-for="star in 5" :key="star">
@@ -39,9 +39,9 @@
                 </div>
               </span>
             </li>
-            <li class="text-gray-500 font-semibold">{{size}}gram</li>
+            <li class="text-gray-500 font-semibold text-sm">{{size}}gram</li>
             <ul class="flex pt-2 items-center">
-              <li class="text-[rgba(59,183,126,1)] text-3xl ">${{ price.toFixed(2) }}</li>
+              <li class="text-(--main-color1) text-3xl ">${{ price.toFixed(2) }}</li>
               <li class=" text-gray-500 font-semibold ps-3 line-through mt-2 ">$2.00</li>
 
               <div :class="['flex justify-center items-center ms-10 rounded-sm w-25 h-10 ml-auto overflow-hidden', isAdded ? 'border border-[rgba(59,183,126,1)]' : '']">
@@ -49,12 +49,12 @@
                   <div v-if="!isAdded"
                       class="h-full flex items-center gap-4 px-3 cursor-pointer bg-green-200 transition-colors w-full justify-center"
                       @click="addToCart">
-                    <span class="text-[rgba(59,183,126,1)] font-semibold text-sm">Add</span>
-                    <i class="fa fa-plus text-[rgba(59,183,126,1)]" aria-hidden="true"></i>
+                    <span class="text-(--main-color1) font-semibold text-sm">Add</span>
+                    <i class="fa fa-plus text-(--main-color1)" aria-hidden="true"></i>
                   </div>
 
                   <div v-else class="flex items-center gap-5 w-full h-full justify-center">
-                    <h1 class="text-2xl text-[rgba(59,183,126,1)]">{{ num }}</h1>
+                    <h1 class="text-2xl text-(--main-color1)">{{ num }}</h1>
 
                     <div class="flex flex-col -space-y-1.5 ">
 
@@ -74,7 +74,7 @@
 
         </div>
       </div>
-
+</router-link>
 </template>
 
 <script lang="ts" setup>
@@ -104,6 +104,7 @@ const downIcons = () => {
   }
 
     }
+
 
 </script>
 
