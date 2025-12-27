@@ -10,7 +10,10 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return response()->json($categories);
+        return response()->json([
+            'message' => 'Getting list of categories',
+            'data' => $categories
+        ], 200);
     }
 
     public function store(Request $request)
@@ -20,13 +23,19 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::create($validated);
-        return response()->json($category, 201);
+        return response()->json([
+            'message' => 'Category created successfully',
+            'data' => $category
+        ], 201);
     }
 
     public function show($id)
     {
         $category = Category::findOrFail($id);
-        return response()->json($category);
+        return response()->json([
+            'message' => 'Getting category details',
+            'data' => $category
+        ], 200);
     }
 
     public function update(Request $request, $id)
@@ -38,20 +47,28 @@ class CategoryController extends Controller
         ]);
 
         $category->update($validated);
-        return response()->json($category);
+        return response()->json([
+            'message' => 'Category updated successfully',
+            'data' => $category
+        ], 200);
     }
 
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
         $category->delete();
-        return response()->json(['message' => 'Category deleted successfully']);
+        return response()->json([
+            'message' => 'Category deleted successfully'
+        ], 200);
     }
 
     public function getProducts($categoryId)
     {
         $category = Category::findOrFail($categoryId);
         $products = $category->products;
-        return response()->json($products);
+        return response()->json([
+            'message' => 'Getting products for category',
+            'data' => $products
+        ], 200);
     }
 }
