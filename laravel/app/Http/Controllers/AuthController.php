@@ -10,50 +10,33 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        try {
-            $credentials = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                $token = $user->createToken('auth_token')->accessToken; // Changed to accessToken
-
-                return response()->json([
-                    'message' => 'Login successful',
-                    'user' => $user->load('roles.permissions'),
-                    'token' => $token,
-                    'roles' => $user->roles->pluck('name'),
-                    'permissions' => $user->roles->flatMap->permissions->pluck('name')->unique()
-                ], 200);
-            }
-
+        if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Invalid credentials'
+                'message' => 'Invalid credentials',
             ], 401);
-
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
         }
-    }
 
-    public function logout(Request $request)
-    {
-        $request->user()->token()->revoke();
-        return response()->json(['message' => 'Successfully logged out']);
-    }
+        $user = Auth::user();
 
-    public function me(Request $request)
-    {
-        $user = $request->user()->load('roles.permissions');
+        $user->load('roles.permissions');
+
+        $tokenResult = $user->createToken('auth_token');
+
         return response()->json([
+            'message' => 'Login successful',
             'user' => $user,
+            'token' => $tokenResult->accessToken,
             'roles' => $user->roles->pluck('name'),
-            'permissions' => $user->roles->flatMap->permissions->pluck('name')->unique()
+            'permissions' => $user->roles
+                ->flatMap(fn ($role) => $role->permissions)
+                ->pluck('name')
+                ->unique()
+                ->values(),
         ]);
     }
 }
