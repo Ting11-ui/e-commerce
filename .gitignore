@@ -1,0 +1,5 @@
+.DS_Store
+*.deb
+*.zip
+Apidog-linux-deb-latest.zip
+apidog_2.7.60_amd64.deb
